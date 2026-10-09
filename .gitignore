@@ -5,6 +5,13 @@ dist/
 release/
 *.tsbuildinfo
 
+# Videos (demo recordings) are never committed
+*.mp4
+*.webm
+*.mov
+*.mkv
+*.avi
+
 # Test and tool output
 .e2e/
 .e2e-web/

@@ -14,7 +14,7 @@ Open Codenames is a deduction and communication game in the style of **Codenames
 
 ## How a game works
 
-- Two teams, **Green** and **Red**, each have a **spymaster** (sees the secret key) and an **operative** (does not). On the standard 20-picture board the starting team has 8 pictures, the other 7, and 5 are neutral. There is no assassin card.
+- Two teams, **Green** and **Red**, each have a **spymaster** (sees the secret key) and an **operative** (does not). On the standard 20-picture board the starting team has 8 pictures, the other 7, and 5 are neutral. By default there is no assassin card; turn on **Assassin card** in Settings → Gameplay for the classic rule (one picture loses the game for the team that reveals it).
 - The spymaster gives **one word and a number**: “Ocean 3” means three of the team’s pictures relate to “ocean”. The word must be about what the pictures show — not their position or letters.
 - The operative picks pictures one by one — up to the number plus one. A neutral picture ends the turn and an opponent’s picture gives them the point.
 - The first team to reveal all its pictures wins.

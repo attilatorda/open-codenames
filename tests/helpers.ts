@@ -1,12 +1,12 @@
 import { ConceptBoardGenerator, cardsFromPlan } from '@core/board/boardGenerator';
-import { getLayout } from '@core/board/layouts';
+import { getLayout, withAssassin } from '@core/board/layouts';
 import { GameEngine } from '@core/engine/GameEngine';
 import type { Card, CardKind, TeamId } from '@core/types';
 
-/** The standard game has no assassin; `assassinVariant` deals one (rule variant) for engine tests. */
+/** The standard game has no assassin; `assassinVariant` deals one (the assassin option). */
 export function makeEngine(seed = 42, layoutId = '5x5', assassinVariant = false): GameEngine {
   const base = getLayout(layoutId);
-  const layout = assassinVariant ? { ...base, id: `${base.id}-assassin`, neutral: base.neutral - 1, assassin: 1 } : base;
+  const layout = assassinVariant ? withAssassin(base) : base;
   const plan = new ConceptBoardGenerator().plan(seed, layout, 'storybook');
   const results = new Map(plan.cards.map((c) => [c.id, { imageId: `img-${c.id}` }]));
   return new GameEngine({

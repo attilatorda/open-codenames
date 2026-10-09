@@ -2,7 +2,7 @@ import type { LLMMessage } from '../LLMClient';
 import type { SecretCard, SpymasterView } from '../../engine/views';
 import { TEAM_NAMES } from '../../teams';
 import type { Personality } from '../personalities';
-import { GAME_INTRO, RULES_SUMMARY, boardParts, cluesGiven, historyLines, revealedSummary, scoreLine, styleBlock } from './common';
+import { GAME_INTRO, boardParts, cluesGiven, historyLines, revealedSummary, scoreLine, styleBlock, rulesSummary } from './common';
 
 export interface SpymasterPromptInput {
   view: SpymasterView;
@@ -18,7 +18,7 @@ export function buildSpymasterPrompt(input: SpymasterPromptInput): { system: str
   const team = TEAM_NAMES[view.team];
   const system = [
     GAME_INTRO,
-    RULES_SUMMARY,
+    rulesSummary(view.assassins),
     '',
     styleBlock(personality, 'spymaster'),
     '',
@@ -53,7 +53,7 @@ export function buildSpymasterPrompt(input: SpymasterPromptInput): { system: str
     `- Your team (${team}), ${myRemaining} left: ${list((c) => c.kind === view.team)}`,
     `- Opponents (${TEAM_NAMES[view.opponent]}), ${oppRemaining} left: ${list((c) => c.kind === view.opponent)}`,
     `- Neutral: ${list((c) => c.kind === 'NEUTRAL')}`,
-    // Only rule variants deal an assassin; the standard game has none.
+    // Only the assassin option deals an assassin; the standard game has none.
     ...(view.cards.some((c) => c.kind === 'ASSASSIN') ? [`- ASSASSIN (instant loss): ${list((c) => c.kind === 'ASSASSIN')}`] : []),
     '',
     `Already revealed (cannot be picked again): ${revealedSummary(view.cards, view.team)}`,

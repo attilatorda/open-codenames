@@ -1,6 +1,7 @@
 import type { ClueSizeMode } from '@core/ai/strategy/clueSize';
+import { getLayout, withAssassin } from '@core/board/layouts';
 import { getMode, type SeatSpec } from '@core/modes/gameModes';
-import type { Role, TeamId } from '@core/types';
+import type { BoardLayout, Role, TeamId } from '@core/types';
 import { createRng, randomSeed } from '@core/util/rng';
 import type { SlotInfo } from '@shared/ipc';
 import type { Settings } from '@shared/settings';
@@ -17,6 +18,8 @@ export interface MatchConfig {
   layoutId: string;
   styleId: string;
   conceptSet: Settings['gameplay']['conceptSet'];
+  /** One neutral picture becomes the assassin (revealing it loses the game). */
+  assassin: boolean;
   /** Picture collection to deal from when imageSource is 'deck'. */
   deckId: string;
   seats: SeatConfig[];
@@ -89,6 +92,7 @@ export function buildMatchConfig(
     layoutId: overrides.layoutId ?? settings.gameplay.layoutId,
     styleId: overrides.styleId ?? settings.gameplay.styleId,
     conceptSet: overrides.conceptSet ?? settings.gameplay.conceptSet ?? 'surreal',
+    assassin: !!settings.gameplay.assassin,
     deckId: overrides.deckId ?? settings.image.deckId ?? 'grandville',
     seats,
     humanTeam: human?.team,
@@ -99,6 +103,12 @@ export function buildMatchConfig(
     pace: settings.gameplay.pace,
     imageSource: imageSourceFor(settings),
   };
+}
+
+/** The board layout for a match, with the assassin when that option is on. */
+export function matchLayout(config: MatchConfig): BoardLayout {
+  const base = getLayout(config.layoutId);
+  return config.assassin ? withAssassin(base) : base;
 }
 
 /** Same seats with the human's role swapped (and the AI teammate taking the other role). */

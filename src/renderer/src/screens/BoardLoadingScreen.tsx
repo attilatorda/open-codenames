@@ -1,11 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { ConceptBoardGenerator, cardsFromPlan, planFromLibrary } from '@core/board/boardGenerator';
 import { conceptBank } from '@core/board/conceptBank';
-import { getLayout } from '@core/board/layouts';
 import type { Card } from '@core/types';
 import type { FriendlyError } from '@shared/ipc';
 import { useApp } from '../state/AppContext';
-import type { MatchConfig } from '../game/matchConfig';
+import { matchLayout, type MatchConfig } from '../game/matchConfig';
 import { Icon } from '../components/Icon';
 import { Dots, TechDetails } from '../components/ui';
 import { play } from '../audio/sfx';
@@ -15,7 +14,7 @@ type CellState = { status: 'pending' | 'done' | 'retrying' | 'failed'; imageId?:
 
 export function BoardLoadingScreen({ config }: { config: MatchConfig }) {
   const { navigate, settings } = useApp();
-  const layout = getLayout(config.layoutId);
+  const layout = matchLayout(config);
   const total = layout.rows * layout.cols;
   const [cells, setCells] = useState<CellState[]>(() => Array.from({ length: total }, () => ({ status: 'pending' })));
   const [done, setDone] = useState(0);

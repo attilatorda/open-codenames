@@ -28,6 +28,8 @@ interface ViewBase {
   opponent: TeamId;
   rows: number;
   cols: number;
+  /** How many assassin cards are on the board (public rule knowledge; 0 in the standard game). */
+  assassins: number;
   turnNumber: number;
   activeTeam: TeamId;
   phase: GameState['phase'];
@@ -54,6 +56,7 @@ function base(state: GameState, team: TeamId): ViewBase {
     opponent: otherTeam(team),
     rows: state.layout.rows,
     cols: state.layout.cols,
+    assassins: state.layout.assassin,
     turnNumber: state.turn.number,
     activeTeam: state.turn.team,
     phase: state.phase,
@@ -105,6 +108,7 @@ export function operativeViewFromSpymaster(view: SpymasterView, clue?: Clue): Op
     opponent: view.opponent,
     rows: view.rows,
     cols: view.cols,
+    assassins: view.assassins,
     turnNumber: view.turnNumber,
     activeTeam: view.activeTeam,
     phase: view.phase,

@@ -301,7 +301,8 @@ export class LLMPlayer implements IPlayer {
         clueNumber: clue.number,
         myRemaining: view.remaining[view.team],
         oppRemaining: view.remaining[view.opponent],
-        baseThreshold: p.guessThreshold,
+        // With an assassin on the board a wrong pick can lose the game, so demand more confidence.
+        baseThreshold: p.guessThreshold + (view.assassins > 0 ? 0.08 : 0),
         risk: clamp(p.risk + (this.cfg.riskBias ?? 0), -1, 1),
         situational: p.situational,
       });

@@ -45,8 +45,14 @@ export function HelpScreen({ tab: initial }: { tab?: string }) {
               </li>
             </ul>
             <p>
-              On the standard 5×4 board (20 pictures) the starting team has 8 pictures, the other team 7, and 5 are neutral. There is no
-              assassin card — no single picture can lose you the game. A quicker 4×4 and a larger 5×5 board are also available.
+              On the standard 5×4 board (20 pictures) the starting team has 8 pictures, the other team 7, and 5 are neutral. A quicker
+              4×4 and a larger 5×5 board are also available.
+            </p>
+            <h3>The assassin</h3>
+            <p>
+              By default there is no assassin card, so no single picture can lose you the game. To play the classic way, turn on{' '}
+              <strong>Assassin card</strong> in Settings → Gameplay: one neutral picture becomes the assassin (a skull on the spymaster’s
+              key), and the team that reveals it loses immediately. The AI players are told about it and guess more carefully.
             </p>
             <h3>Spymaster and operative</h3>
             <p>

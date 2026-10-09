@@ -56,8 +56,6 @@ const DEMO_CSS = `
   #demo-card .mark { display: grid; grid-template-columns: repeat(2, 30px); gap: 5px; }
   #demo-card .mark i { width: 30px; height: 30px; border-radius: 5px; }
   #demo-card h1 { margin: 0; font-size: 64px; font-weight: 700; }
-  #demo-card p { margin: 0; font-size: 28px; color: #d6d6d6; max-width: 1000px; }
-  #demo-card p.small { font-size: 22px; color: #a9a9a9; }
 `;
 
 async function installOverlay(page: Page): Promise<void> {
@@ -75,7 +73,13 @@ async function installOverlay(page: Page): Promise<void> {
   });
 }
 
+/** When the current caption has been on screen long enough to read. */
+let captionUntil = 0;
+const readingTime = (text: string) => Math.min(7000, Math.max(3800, text.length * 52));
+
+/** Show a caption once the previous one has been readable for long enough. */
 async function caption(page: Page, text: string): Promise<void> {
+  await holdCaption(page);
   await page.evaluate(async (t) => {
     const el = document.getElementById('demo-caption')!;
     if (!el.classList.contains('hidden')) {
@@ -85,17 +89,25 @@ async function caption(page: Page, text: string): Promise<void> {
     el.textContent = t;
     el.classList.remove('hidden');
   }, text);
+  captionUntil = Date.now() + readingTime(text);
 }
 
-async function titleCard(page: Page, lines: { title: string; text: string; small?: string } | null): Promise<void> {
-  await page.evaluate((l) => {
+/** Wait until the current caption has been readable for long enough. */
+async function holdCaption(page: Page): Promise<void> {
+  const wait = captionUntil - Date.now();
+  if (wait > 0) await page.waitForTimeout(wait);
+}
+
+/** Full-screen card with the game's name (or hide it with null). */
+async function titleCard(page: Page, title: string | null): Promise<void> {
+  await page.evaluate((t) => {
     const el = document.getElementById('demo-card')!;
-    if (!l) return void el.classList.add('hidden');
+    if (!t) return void el.classList.add('hidden');
     el.innerHTML =
       '<div class="mark"><i style="background:#2e8b3d"></i><i style="background:#cdbd97"></i><i style="background:#cdbd97"></i><i style="background:#cc3a2f"></i></div>' +
-      `<h1>${l.title}</h1><p>${l.text}</p>${l.small ? `<p class="small">${l.small}</p>` : ''}`;
+      `<h1>${t}</h1>`;
     el.classList.remove('hidden');
-  }, lines);
+  }, title);
 }
 
 /** Move the visible cursor to an element. */
@@ -164,7 +176,7 @@ function layoutOf(cards: CardState[]) {
 }
 
 /** A clue for two of the human team's pictures, chosen by association (like the mock spymaster). */
-function chooseClue(cards: CardState[]): { word: string; targets: string[] } {
+function chooseClue(cards: CardState[], exclude: string[] = []): { word: string; targets: string[] } {
   const { rows, cols } = layoutOf(cards);
   const secret = cards.map((c, id) => ({ id, coord: c.coord, imageId: c.imageId, revealed: c.revealed, kind: KIND[c.secret ?? c.kind ?? 'neutral'] }));
   const view: SpymasterView = {
@@ -173,6 +185,7 @@ function chooseClue(cards: CardState[]): { word: string; targets: string[] } {
     opponent: 'B',
     rows,
     cols,
+    assassins: 0,
     turnNumber: 1,
     activeTeam: 'A',
     phase: 'clue',
@@ -184,7 +197,8 @@ function chooseClue(cards: CardState[]): { word: string; targets: string[] } {
   const reply = JSON.parse(mockBrainReply({ slot: 0, system: prompt.system, messages: prompt.messages, maxTokens: 1400 }, captionOf)) as {
     candidates: { clue: string; targets: { card: string }[] }[];
   };
-  const best = reply.candidates.find((c) => c.targets.length === 2) ?? reply.candidates[0];
+  const fresh = reply.candidates.filter((c) => !exclude.includes(c.clue.toLowerCase()));
+  const best = fresh.find((c) => c.targets.length === 2) ?? fresh[0] ?? reply.candidates[0];
   return { word: best.clue, targets: best.targets.map((t) => t.card) };
 }
 
@@ -198,6 +212,7 @@ function chooseGuesses(cards: CardState[], word: string, number: number): string
     opponent: 'B',
     rows,
     cols,
+    assassins: 0,
     turnNumber: 1,
     activeTeam: 'A',
     phase: 'guess',
@@ -266,14 +281,7 @@ async function encode(frames: Frame[], end: number, file: string): Promise<numbe
 
 type Scenario = { id: string; file: string; seed: number; role: 'operative' | 'spymaster'; run: (page: Page) => Promise<void> };
 
-const END_CARD = {
-  title: 'Open Codenames',
-  text: 'Codenames with pictures, played with AI teammates and opponents.',
-  small: 'Bring your own AI key · Windows and browser · itch.io',
-};
-
-async function startGame(page: Page, role: 'operative' | 'spymaster', intro: string): Promise<void> {
-  await caption(page, intro);
+async function startGame(page: Page, role: 'operative' | 'spymaster'): Promise<void> {
   await clickOn(page, '[data-testid="menu-quick"]', { pause: 400 });
   await clickOn(page, `button:has-text("${role === 'spymaster' ? 'Spymaster — give clues' : 'Operative — guess'}")`, { pause: 200 });
   await clickOn(page, '[data-testid="setup-start"]');
@@ -281,7 +289,7 @@ async function startGame(page: Page, role: 'operative' | 'spymaster', intro: str
   await page.waitForFunction(() => [...document.querySelectorAll('.board .card-face.front img')].every((i) => (i as HTMLImageElement).complete && (i as HTMLImageElement).naturalWidth > 0));
 }
 
-/** Wait until the human may guess again, or the turn passed back to the clue phase. */
+/** Wait until the human may act again (or the game ended). */
 async function waitForTurnEnd(page: Page, maxMs: number): Promise<void> {
   const until = Date.now() + maxMs;
   while (Date.now() < until) {
@@ -292,6 +300,33 @@ async function waitForTurnEnd(page: Page, maxMs: number): Promise<void> {
   }
 }
 
+/** As spymaster: point at two of your pictures, type a clue that links them, and give it. Returns the word. */
+async function giveClue(page: Page, exclude: string[] = []): Promise<string> {
+  await page.getByTestId('clue-input').waitFor({ timeout: 30_000 });
+  const clue = chooseClue(await readBoard(page), exclude);
+  for (const coord of clue.targets) await pointAt(page, `.board .card[data-coord="${coord}"]`, 300);
+  await clickOn(page, '[data-testid="clue-word"]', { pause: 100 });
+  await page.getByTestId('clue-word').pressSequentially(clue.word, { delay: 100 });
+  await page.waitForTimeout(250);
+  await clickOn(page, '[data-testid="clue-submit"]');
+  await park(page);
+  return clue.word.toLowerCase();
+}
+
+/** Opening and closing card: just the name. */
+async function bookend(page: Page, opening: boolean): Promise<void> {
+  if (opening) {
+    await titleCard(page, 'Open Codenames');
+    await page.waitForTimeout(2200);
+    await titleCard(page, null);
+    await page.waitForTimeout(400);
+  } else {
+    await holdCaption(page);
+    await titleCard(page, 'Open Codenames');
+    await page.waitForTimeout(2500);
+  }
+}
+
 const SCENARIOS: Scenario[] = [
   {
     id: '1',
@@ -299,41 +334,33 @@ const SCENARIOS: Scenario[] = [
     seed: 7,
     role: 'operative',
     async run(page) {
-      await titleCard(page, { title: 'Open Codenames', text: 'Codenames with pictures — and an AI teammate.' });
-      await page.waitForTimeout(2600);
-      await titleCard(page, null);
-      await page.waitForTimeout(400);
-      await startGame(page, 'operative', 'You and an AI teammate take on two AI opponents.');
-
+      await bookend(page, true);
+      await caption(page, 'Open Codenames plays like regular Codenames, with pictures. The instant-loss assassin is off by default; you can turn it on in Settings.');
+      await startGame(page, 'operative');
       await page.getByTestId('clue-size-2').waitFor({ timeout: 30_000 });
-      await caption(page, 'Before each round, you tell your teammate how many pictures to aim for.');
-      await page.waitForTimeout(900);
+      await page.waitForTimeout(700);
       await clickOn(page, '[data-testid="clue-size-2"]');
       await park(page);
-      await caption(page, 'It studies the pictures and looks for one word that links two of yours.');
 
+      await caption(page, 'You supply your own API key: Anthropic, OpenAI, Google, OpenRouter, xAI or Mistral. Each AI seat can run a different model.');
       await page.getByTestId('end-turn').waitFor({ timeout: 30_000 });
       const word = (await page.getByTestId('current-clue').innerText()).trim();
       const number = Number(await page.locator('.clue-plate-num').innerText());
-      await caption(page, `The clue is ${word} ${number}. Your turn: find the pictures it means.`);
-      await page.waitForTimeout(1200);
+      await page.waitForTimeout(900);
+
+      await caption(page, 'The game is free and licensed under the MIT license. Play it on Windows or in the browser.');
       const picks = chooseGuesses(await readBoard(page), word, number).slice(0, number);
       for (const coord of picks) {
         if (!(await page.getByTestId('end-turn').isVisible())) break;
         await clickOn(page, `.board .card[data-coord="${coord}"]`, { pause: 150 });
-        await clickOn(page, '[data-testid="reveal"]', { pause: 1100 });
+        await clickOn(page, '[data-testid="reveal"]', { pause: 1000 });
       }
-      if (await page.getByTestId('end-turn').isVisible()) {
-        await caption(page, 'Right picks keep the turn going. Stop while you are ahead.');
-        await page.waitForTimeout(700);
-        await clickOn(page, '[data-testid="end-turn"]');
-      }
+      if (await page.getByTestId('end-turn').isVisible()) await clickOn(page, '[data-testid="end-turn"]');
       await park(page);
-      await caption(page, 'Then the AI opponents play, and explain every pick in the game log.');
-      await waitForTurnEnd(page, 9000);
-      await page.waitForTimeout(600);
-      await titleCard(page, END_CARD);
-      await page.waitForTimeout(3200);
+
+      await caption(page, 'It could also be used to benchmark LLMs: let different models give and read clues, and compare how well they do.');
+      await waitForTurnEnd(page, 7000);
+      await bookend(page, false);
     },
   },
   {
@@ -342,34 +369,22 @@ const SCENARIOS: Scenario[] = [
     seed: 11,
     role: 'spymaster',
     async run(page) {
-      await titleCard(page, { title: 'Open Codenames', text: 'Can an AI read your mind from one word?' });
-      await page.waitForTimeout(2600);
-      await titleCard(page, null);
-      await page.waitForTimeout(400);
-      await startGame(page, 'spymaster', 'This time you are the spymaster, with an AI as your operative.');
+      await bookend(page, true);
+      await caption(page, 'Open Codenames plays like regular Codenames: one-word clues, a team of pictures to find. The assassin is off by default and optional in Settings.');
+      await startGame(page, 'spymaster');
+      const first = await giveClue(page);
 
-      await page.getByTestId('clue-input').waitFor({ timeout: 30_000 });
-      await caption(page, 'You see the secret key: the green-framed pictures are your team’s.');
-      await page.waitForTimeout(2600);
-      const clue = chooseClue(await readBoard(page));
-      await caption(page, `Give one word that connects two of them: ${clue.word.toUpperCase()}.`);
-      for (const coord of clue.targets) await pointAt(page, `.board .card[data-coord="${coord}"]`, 500);
-      await clickOn(page, '[data-testid="clue-word"]', { pause: 100 });
-      await page.getByTestId('clue-word').pressSequentially(clue.word, { delay: 110 });
-      await page.waitForTimeout(400);
-      await clickOn(page, '[data-testid="clue-submit"]');
-      await park(page);
-
-      await caption(page, 'Your AI teammate looks at the pictures, not at text, and reads your clue…');
-      await page.locator('.card.pointing').first().waitFor({ timeout: 30_000 });
-      await caption(page, '…then picks, and says out loud why each picture fits.');
+      await caption(page, 'Bring your own API key for Anthropic, OpenAI, Google, OpenRouter, xAI or Mistral, and AI players fill the other seats.');
       // The Red team's turn starts once Green's operative stops.
       await page.waitForSelector('.player-board.red.active', { timeout: 30_000 });
-      await caption(page, 'The opponents answer. No clue is ever used twice.');
-      await waitForTurnEnd(page, 9000);
-      await page.waitForTimeout(500);
-      await titleCard(page, END_CARD);
-      await page.waitForTimeout(3200);
+
+      await caption(page, 'Open Codenames is free and licensed under the MIT license, for Windows and the browser.');
+      await page.getByTestId('clue-input').waitFor({ timeout: 30_000 });
+
+      await caption(page, 'It could also be used to benchmark LLMs: how well does a model give a clue, and how well does another one read it?');
+      await giveClue(page, [first]);
+      await page.locator('.card.pointing').first().waitFor({ timeout: 30_000 });
+      await bookend(page, false);
     },
   },
 ];
@@ -409,7 +424,7 @@ try {
       return imgs.length === 8 && imgs.every((i) => i.complete && i.naturalWidth > 0);
     });
     await installOverlay(page);
-    await titleCard(page, { title: 'Open Codenames', text: '' });
+    await titleCard(page, 'Open Codenames');
     await page.waitForTimeout(300);
 
     const rec = await startRecording(page);

@@ -3,7 +3,7 @@ import type { OperativeView } from '../../engine/views';
 import type { Clue } from '../../types';
 import { TEAM_NAMES } from '../../teams';
 import type { Personality } from '../personalities';
-import { GAME_INTRO, RULES_SUMMARY, boardParts, historyLines, revealedSummary, scoreLine, styleBlock } from './common';
+import { GAME_INTRO, boardParts, rulesSummary, historyLines, revealedSummary, scoreLine, styleBlock } from './common';
 
 export interface OperativePromptInput {
   view: OperativeView;
@@ -18,7 +18,7 @@ export function buildOperativePrompt(input: OperativePromptInput): { system: str
   const team = TEAM_NAMES[view.team];
   const system = [
     GAME_INTRO,
-    RULES_SUMMARY,
+    rulesSummary(view.assassins),
     '',
     styleBlock(personality, 'operative'),
     '',
@@ -82,7 +82,7 @@ export function buildSimulationPrompt(input: SimulationPromptInput): { system: s
   const { view } = input;
   const system = [
     GAME_INTRO,
-    RULES_SUMMARY,
+    rulesSummary(view.assassins),
     '',
     'You are predicting how a teammate operative — who cannot see the secret key — would interpret several possible clues.',
     'Think like a typical player reading the pictures, using what is known about this teammate.',

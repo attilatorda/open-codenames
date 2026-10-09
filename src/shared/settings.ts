@@ -48,6 +48,8 @@ export interface GameplaySettings {
   styleId: string;
   /** Which subject bank new boards draw from. */
   conceptSet: 'surreal' | 'scenes';
+  /** Deal an assassin card: revealing it loses the game (off by default). */
+  assassin: boolean;
   humanRole: HumanRoleSetting;
   lastHumanRole?: Role;
   /** The clue size last picked in a game; preselected the next time your AI teammate gives a clue. */
@@ -83,6 +85,7 @@ export function defaultSettings(): Settings {
       layoutId: '4x5',
       styleId: 'ink',
       conceptSet: 'surreal',
+      assassin: false,
       humanRole: 'alternate',
       clueSize: 'auto',
       riskBias: 0,

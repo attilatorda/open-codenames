@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react';
 import { AIPlayerError, LLMPlayer } from '@core/ai/LLMPlayer';
 import { LLMClientError } from '@core/ai/LLMClient';
 import type { ClueSizeMode } from '@core/ai/strategy/clueSize';
-import { getLayout } from '@core/board/layouts';
 import { GameEngine, RuleViolation } from '@core/engine/GameEngine';
 import { MatchAborted, MatchController, type ErrorChoice } from '@core/engine/MatchController';
 import { HumanPlayer, type HumanRequest } from '@core/players/HumanPlayer';
@@ -12,7 +11,7 @@ import type { CardKind, GameState, TeamId } from '@core/types';
 import { deriveSeed } from '@core/util/rng';
 import { play } from '../audio/sfx';
 import type { BoardReady } from '../state/nav';
-import { PACE_MS, type MatchConfig } from './matchConfig';
+import { PACE_MS, matchLayout, type MatchConfig } from './matchConfig';
 import { RemoteLLMClient } from './RemoteLLMClient';
 
 export interface FeedEntry {
@@ -77,7 +76,7 @@ export function useMatch(config: MatchConfig, board: BoardReady): MatchHandle {
     new GameEngine({
       id: config.id,
       seed: config.seed,
-      layout: getLayout(config.layoutId),
+      layout: matchLayout(config),
       cards: board.cards,
       startingTeam: board.startingTeam,
     }).getState(),
@@ -101,7 +100,7 @@ export function useMatch(config: MatchConfig, board: BoardReady): MatchHandle {
     const engine = new GameEngine({
       id: config.id,
       seed: config.seed,
-      layout: getLayout(config.layoutId),
+      layout: matchLayout(config),
       cards: board.cards,
       startingTeam: board.startingTeam,
     });

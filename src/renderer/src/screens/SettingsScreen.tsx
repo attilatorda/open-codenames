@@ -72,6 +72,9 @@ function GameplayTab() {
       <Row label="Board size">
         <Segmented value={g.layoutId} onChange={(v) => set({ layoutId: v })} options={LAYOUTS.map((l) => ({ value: l.id, label: l.short, title: l.label }))} />
       </Row>
+      <Row label="Assassin card">
+        <Toggle checked={!!g.assassin} onChange={(v) => set({ assassin: v })} label="Assassin card" />
+      </Row>
       <Row label="Picture subjects">
         <Segmented
           value={g.conceptSet ?? 'surreal'}

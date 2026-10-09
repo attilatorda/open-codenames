@@ -9,12 +9,19 @@ export const GAME_INTRO =
   'Two teams (Green and Red) race to find their own pictures on a shared grid. ' +
   'Each team has a spymaster, who sees a secret key, and an operative, who does not.';
 
-export const RULES_SUMMARY =
-  'Rules: a clue is exactly ONE word plus a number (how many of the team’s pictures relate to the word). ' +
-  'The operative then picks pictures one at a time, up to the number plus one. ' +
-  'Picking a team picture lets them continue; a neutral picture ends the turn; ' +
-  'an opponent picture gives the opponents a point and ends the turn. ' +
-  'The first team to reveal all its pictures wins.';
+/** The rules every player is told. `assassins` > 0 when the assassin option is on. */
+export function rulesSummary(assassins: number): string {
+  return (
+    'Rules: a clue is exactly ONE word plus a number (how many of the team’s pictures relate to the word). ' +
+    'The operative then picks pictures one at a time, up to the number plus one. ' +
+    'Picking a team picture lets them continue; a neutral picture ends the turn; ' +
+    'an opponent picture gives the opponents a point and ends the turn. ' +
+    (assassins > 0
+      ? 'One picture is the ASSASSIN: the team that reveals it loses the game immediately, so never risk a picture that could be it. '
+      : '') +
+    'The first team to reveal all its pictures wins.'
+  );
+}
 
 export function styleBlock(p: Personality, forRole: 'spymaster' | 'operative'): string {
   return [

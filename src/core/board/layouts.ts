@@ -1,8 +1,8 @@
 import type { BoardLayout } from '../types';
 
 // Ids are rows×cols. The default is the 5 columns × 4 rows picture grid.
-// Open Codenames has no assassin ("lose the game") card: the slot is an extra neutral picture.
-// The engine still supports assassins for rule variants (set `assassin` > 0 on a custom layout).
+// By default there is no assassin ("lose the game") card: the slot is an extra neutral picture.
+// The assassin option (Settings → Gameplay) turns one neutral picture into the assassin.
 export const LAYOUTS: readonly BoardLayout[] = [
   { id: '4x4', short: '4×4', label: '4 × 4 — quick (16 pictures)', rows: 4, cols: 4, starting: 6, other: 5, neutral: 5, assassin: 0 },
   { id: '4x5', short: '5×4', label: '5 × 4 — standard (20 pictures)', rows: 4, cols: 5, starting: 8, other: 7, neutral: 5, assassin: 0 },
@@ -13,6 +13,11 @@ export const DEFAULT_LAYOUT_ID = '4x5';
 
 export function getLayout(id: string): BoardLayout {
   return LAYOUTS.find((l) => l.id === id) ?? LAYOUTS.find((l) => l.id === DEFAULT_LAYOUT_ID)!;
+}
+
+/** The same board with one neutral picture replaced by the assassin. */
+export function withAssassin(layout: BoardLayout): BoardLayout {
+  return layout.assassin > 0 ? layout : { ...layout, neutral: layout.neutral - 1, assassin: 1 };
 }
 
 export function layoutSize(layout: BoardLayout): number {
