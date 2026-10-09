@@ -1,0 +1,9 @@
+# itch.io app manifest — https://itch.io/docs/itch/integrating/manifest.html
+[[actions]]
+name = "play"
+path = "Open Codenames.exe"
+platform = "windows"
+
+[[actions]]
+name = "Read me"
+path = "README.md"

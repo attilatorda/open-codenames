@@ -1,0 +1,343 @@
+{
+ "about": "Standard deck selection. candidate = index into deck-src/candidates/candidates.json; box (optional) overrides the crop in working-copy page pixels; title (optional) overrides the catalogue title — bracketed titles are cataloguer-supplied descriptions for untitled vignettes.",
+ "cards": [
+  {
+   "candidate": 40,
+   "caption": "A chameleon-headed man in a tailcoat dropping a paper into a ballot box."
+  },
+  {
+   "candidate": 45,
+   "caption": "A magpie lady in an enormous crinoline writing with a quill."
+  },
+  {
+   "candidate": 47,
+   "caption": "A spaniel in a frock coat holding a hunting horn behind his back."
+  },
+  {
+   "candidate": 49,
+   "caption": "A rabbit gentleman in a jacket next to a table with a top hat and books."
+  },
+  {
+   "candidate": 50,
+   "caption": "A hare in a jacket and trousers holding a top hat upside down."
+  },
+  {
+   "candidate": 51,
+   "caption": "A portly vulture landlord in a top hat and greatcoat leaning on a cane."
+  },
+  {
+   "candidate": 52,
+   "caption": "A rooster dandy in a tailcoat posing with a riding crop."
+  },
+  {
+   "candidate": 56,
+   "caption": "A crocodile in a top hat dabbing its eyes at a shop counter, a body at its feet."
+  },
+  {
+   "candidate": 59,
+   "caption": "An insect gentleman in a tailcoat admiring a portrait on the wall."
+  },
+  {
+   "candidate": 60,
+   "caption": "An old butterfly dandy sniffing a vase of flowers, hat in hand."
+  },
+  {
+   "candidate": 63,
+   "caption": "A crow in a tailcoat hurrying down a city street."
+  },
+  {
+   "candidate": 64,
+   "caption": "An old animal veteran in a bicorne hat leaning on a sword."
+  },
+  {
+   "candidate": 65,
+   "caption": "A stork in a judge’s black robe and white wig."
+  },
+  {
+   "candidate": 67,
+   "caption": "A wolf chained in a prison cell, reading a book."
+  },
+  {
+   "candidate": 70,
+   "caption": "A little animal housemaid in a bonnet and apron."
+  },
+  {
+   "candidate": 72,
+   "caption": "An old mouse seamstress in a long dress sitting in a wooden armchair."
+  },
+  {
+   "candidate": 74,
+   "caption": "A cat peering at mice trapped inside a cage."
+  },
+  {
+   "candidate": 76,
+   "caption": "A long-beaked bird traveller with a backpack and walking stick."
+  },
+  {
+   "candidate": 79,
+   "caption": "A bird officer in a cocked hat, plaid cape and riding boots."
+  },
+  {
+   "candidate": 81,
+   "caption": "A wolf standing guard in a cape, holding a rifle over his shoulder."
+  },
+  {
+   "candidate": 83,
+   "caption": "A creature in a straw hat chasing butterflies with a net."
+  },
+  {
+   "candidate": 84,
+   "caption": "A she-wolf lady in a grand ball gown."
+  },
+  {
+   "candidate": 90,
+   "caption": "A fox in an overcoat holding his top hat."
+  },
+  {
+   "candidate": 92,
+   "caption": "A swaggering musketeer in a plumed hat and cape."
+  },
+  {
+   "candidate": 93,
+   "caption": "A heron lady in a full dress carrying a handbag."
+  },
+  {
+   "candidate": 95,
+   "caption": "A stork standing over a gathering of black birds by a stone column."
+  },
+  {
+   "candidate": 97,
+   "caption": "A shrew in shirtsleeves drilling into the ground with a hand auger, a pickaxe at its feet."
+  },
+  {
+   "candidate": 98,
+   "caption": "An old falcon gentleman in a long coat and spotted waistcoat."
+  },
+  {
+   "candidate": 101,
+   "caption": "A dog hunter with a rifle leaning on a fence."
+  },
+  {
+   "candidate": 102,
+   "caption": "A turkey banker in a suit fanning his huge tail."
+  },
+  {
+   "candidate": 105,
+   "caption": "An owl lady in a frilly ball gown."
+  },
+  {
+   "candidate": 107,
+   "caption": "An old bird servant in a coat, hands clasped behind its back."
+  },
+  {
+   "candidate": 281,
+   "title": "[The pocket knife]",
+   "caption": "An open pocket knife standing upright like a person, casting a long shadow."
+  },
+  {
+   "candidate": 282,
+   "title": "[Duel of the quill pens]",
+   "caption": "Two quill pens with faces fighting a sword duel."
+  },
+  {
+   "candidate": 283,
+   "title": "[A pen nib on the march]",
+   "caption": "A walking pen nib carrying a bundle and a pennant toward the rising sun."
+  },
+  {
+   "candidate": 284,
+   "title": "[The grinning gentleman]",
+   "caption": "A grinning one-eyed gentleman with an eye patch and crossed legs, holding his hat."
+  },
+  {
+   "candidate": 293,
+   "box": [
+    235,
+    288,
+    800,
+    812
+   ],
+   "title": "[Steam-powered musicians]",
+   "caption": "Steam engines making music: one blows a trumpet, another reads a score."
+  },
+  {
+   "candidate": 294,
+   "title": "[The harp machine]",
+   "caption": "A steam machine playing the harp beside a baby’s cradle."
+  },
+  {
+   "candidate": 299,
+   "title": "[The column and the crowd]",
+   "caption": "A tall monument column surrounded by a swirl of tiny people, coaches and objects."
+  },
+  {
+   "candidate": 305,
+   "title": "[Dance of the rabbits]",
+   "caption": "Rabbits and a fox dancing wildly while a bird in a cloak watches."
+  },
+  {
+   "candidate": 315,
+   "title": "[The winged dancer]",
+   "caption": "A ballerina with dragonfly wings dancing on tiptoe."
+  },
+  {
+   "candidate": 316,
+   "title": "[Ballet of legs]",
+   "caption": "Leaping ballerinas in front of a row of disembodied dancing legs."
+  },
+  {
+   "candidate": 317,
+   "box": [
+    245,
+    205,
+    815,
+    830
+   ],
+   "title": "Le Royaume des marionnettes",
+   "caption": "A jointed wooden marionette dancer with too many arms and legs."
+  },
+  {
+   "candidate": 322,
+   "box": [
+    105,
+    190,
+    890,
+    1090
+   ],
+   "title": "Combat de deux raffinés",
+   "caption": "Two vegetable gentlemen with leafy heads fighting a duel with long spears."
+  },
+  {
+   "candidate": 325,
+   "box": [
+    100,
+    755,
+    870,
+    1215
+   ],
+   "title": "[Taken for a walk]",
+   "caption": "A huge dog walking a tiny man in a top hat on a leash."
+  },
+  {
+   "candidate": 329,
+   "title": "[The monkey painter]",
+   "caption": "A monkey painter at an easel while another monkey watches."
+  },
+  {
+   "candidate": 330,
+   "title": "[Studio of the apes]",
+   "caption": "Monkeys in a painting studio, one working on a huge canvas while others copy him."
+  },
+  {
+   "candidate": 335,
+   "title": "[The giant thumb]",
+   "caption": "A gigantic thumb and fist carved as statues, with a tiny sculptor at work."
+  },
+  {
+   "candidate": 337,
+   "title": "[The black sun]",
+   "caption": "A black sun with long rays rising over the mountains."
+  },
+  {
+   "candidate": 340,
+   "title": "[The flying frog]",
+   "caption": "A frog flying on enormous eagle wings."
+  },
+  {
+   "candidate": 341,
+   "box": [
+    130,
+    110,
+    880,
+    1128
+   ],
+   "title": "La Poursuite",
+   "caption": "A toucan ridden by a goblin chasing a bear and a tortoise while strange birds fly overhead."
+  },
+  {
+   "candidate": 349,
+   "title": "[The menagerie]",
+   "caption": "A zoo enclosure with a giraffe, a stork, an owl, a tortoise and odd creatures."
+  },
+  {
+   "candidate": 350,
+   "title": "[Garden of crystals]",
+   "caption": "A landscape of crystals, pyramids, towers and dice."
+  },
+  {
+   "candidate": 351,
+   "title": "[Garden of strange plants]",
+   "caption": "A clifftop garden of plants shaped like feathers, combs, shells and brushes."
+  },
+  {
+   "candidate": 352,
+   "title": "[Tightrope over the flowers]",
+   "caption": "A spidery acrobat walking a tightrope above a field of flowers."
+  },
+  {
+   "candidate": 353,
+   "title": "[Flowers at the gate]",
+   "caption": "Flowers with faces walking out through an arched doorway."
+  },
+  {
+   "candidate": 354,
+   "title": "[The vegetable assembly]",
+   "caption": "Vegetables and flowers with faces holding a meeting."
+  },
+  {
+   "candidate": 357,
+   "title": "[Flying with kites]",
+   "caption": "A man floating above the clouds held up by kites."
+  },
+  {
+   "candidate": 359,
+   "title": "[The flying man]",
+   "caption": "A man flying with giant feather wings strapped to his body."
+  },
+  {
+   "candidate": 370,
+   "title": "[The very tall man]",
+   "caption": "An impossibly tall, thin man looming over a seated woman."
+  },
+  {
+   "candidate": 379,
+   "title": "[The smiling lyre]",
+   "caption": "A lyre with a smiling face, framed by laurel branches and rays of light."
+  },
+  {
+   "candidate": 396,
+   "title": "[Cupid with a cane]",
+   "caption": "A cupid leaning on a walking stick beside a butterfly."
+  },
+  {
+   "candidate": 419,
+   "title": "[The cow idol]",
+   "caption": "A cow-headed idol seated on a pedestal in clouds of smoke."
+  },
+  {
+   "candidate": 423,
+   "title": "[The political clockwork]",
+   "caption": "A giant clock machine above a grumpy giant, with tiny men riding seesaws."
+  },
+  {
+   "candidate": 431,
+   "title": "[Dancer between the fans]",
+   "caption": "A tiny dancer suspended between two enormous fan-like leaves."
+  },
+  {
+   "candidate": 437,
+   "title": "[The ladder of ambition]",
+   "caption": "Officers in plumed hats scrambling over each other up a ladder, waving papers."
+  },
+  {
+   "candidate": 439,
+   "title": "[The wheel of fashion]",
+   "caption": "A great wheel of hats spinning through the years."
+  },
+  {
+   "candidate": 444,
+   "title": "[Letters as monuments]",
+   "caption": "Giant letters standing like a gateway, a tiny figure balancing on top."
+  }
+ ]
+}

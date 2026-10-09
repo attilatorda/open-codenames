@@ -1,0 +1,28 @@
+# Dependencies and build output
+node_modules/
+out/
+dist/
+release/
+*.tsbuildinfo
+
+# Test and tool output
+.e2e/
+.e2e-web/
+*.log
+__pycache__/
+*.pyc
+
+# Local working folders (generated boards, raw deck sources)
+.samples/
+archive/
+deck-src/
+
+# Secrets never belong in the repository
+.env
+.env.*
+*.pem
+*.key
+
+# OS clutter
+.DS_Store
+Thumbs.db

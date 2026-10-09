@@ -1,0 +1,46 @@
+/* Open Codenames design tokens — board-game-site look: dark site bar, light table, white panels, blue action buttons. */
+:root {
+  --table: #e6dfd2;
+  --table-deep: #d8cfbe;
+  --panel: #ffffff;
+  --panel-soft: #f6f4ef;
+  --line: #e2ddd3;
+  --line-strong: #c9c2b5;
+  --header: #1d1f24;
+  --header-text: #e9e9e9;
+
+  --text: #1f1f1f;
+  --text-soft: #3d3d3d;
+  --muted: #6b6b6b;
+  --dim: #999999;
+
+  --blue: #4871b6;
+  --blue-hover: #3b62a3;
+  --blue-soft: #e8eef8;
+  --gray-btn: #ececec;
+  --gray-btn-hover: #e0e0e0;
+  --danger: #a8322a;
+
+  --green: #2e8b3d;
+  --green-soft: #e2f2e4;
+  --red: #cc3a2f;
+  --red-soft: #fbe5e2;
+  --neutral: #cdbd97;
+  --neutral-deep: #8a7a55;
+  --assassin: #222222;
+  --good: #1f7a35;
+  --good-soft: #e3f3e6;
+  --bad: #b3261e;
+  --bad-soft: #fbe6e4;
+
+  --paper: #ffffff;
+
+  --font-body: 'Roboto', Arial, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', Consolas, monospace;
+
+  --radius-s: 4px;
+  --radius-m: 8px;
+  --shadow-panel: 0 3px 8px rgba(0, 0, 0, 0.3);
+  --shadow-card: 0 2px 5px rgba(0, 0, 0, 0.35);
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+}

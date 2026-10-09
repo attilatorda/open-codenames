@@ -1,0 +1,44 @@
+appId: com.opencodenames.game
+productName: Open Codenames
+copyright: Open Codenames
+# Release build (what ships on itch.io). The debug build extends this file: electron-builder.debug.yml.
+directories:
+  output: release/desktop
+  buildResources: build
+files:
+  - out/**
+  - package.json
+  - "!**/*.map"
+asar: true
+# Built-in picture collections (public-domain artwork) ship as plain files inside resources/decks.
+extraResources:
+  - from: resources/decks
+    to: decks
+# Shipped next to the executable so players (and the itch.io app) can find them.
+extraFiles:
+  - from: build/itch.toml
+    to: .itch.toml
+  - from: docs
+    to: docs
+    filter:
+      - "**/*.md"
+  - from: docs/README.md
+    to: README.md
+  - from: LICENSE
+    to: LICENSE.txt
+  - from: THIRD_PARTY_NOTICES.md
+    to: THIRD_PARTY_NOTICES.md
+win:
+  icon: build/icon.png
+  target:
+    - target: zip
+      arch: [x64]
+artifactName: OpenCodenames-${version}-windows-${arch}.${ext}
+mac:
+  icon: build/icon.png
+  category: public.app-category.board-games
+  target: [zip]
+linux:
+  icon: build/icon.png
+  category: Game
+  target: [AppImage]

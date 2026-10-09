@@ -1,0 +1,9 @@
+# Debug build: same game plus the offline mock AI (for testing and demos). Not for distribution.
+extends: electron-builder.yml
+appId: com.opencodenames.game.debug
+productName: Open Codenames Debug
+directories:
+  output: release/debug
+win:
+  target:
+    - target: dir

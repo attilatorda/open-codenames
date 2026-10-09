@@ -1,0 +1,56 @@
+{
+  "name": "open-codenames",
+  "productName": "Open Codenames",
+  "version": "0.1.0",
+  "description": "Codenames with pictures, played with AI teammates and opponents.",
+  "main": "./out/main/index.js",
+  "author": "Attila Torda",
+  "license": "MIT",
+  "private": true,
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "electron-vite dev",
+    "dev:web": "vite -c vite.web.config.ts",
+    "build": "electron-vite build",
+    "build:release": "cross-env OC_BUILD=release electron-vite build",
+    "build:web": "cross-env OC_BUILD=release vite build -c vite.web.config.ts",
+    "build:web:debug": "vite build -c vite.web.config.ts",
+    "start": "electron-vite preview",
+    "typecheck": "tsc --noEmit -p tsconfig.node.json && tsc --noEmit -p tsconfig.web.json",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "e2e": "npm run build && node scripts/e2e.mjs",
+    "e2e:web": "npm run build:web:debug && node scripts/e2e-web.mjs",
+    "dist:debug": "npm run build && electron-builder --win --publish never -c electron-builder.debug.yml",
+    "dist:release": "npm run build:release && electron-builder --win --publish never",
+    "dist": "npm run dist:release",
+    "dist:itch": "npm run dist:release && npm run build:web && node scripts/package-itch.mjs",
+    "demos": "npm run build:web:debug && npx tsx scripts/record-demos.mts"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.132.1",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@fontsource/jetbrains-mono": "^5.3.0",
+    "@fontsource/roboto": "^5.3.0",
+    "@types/node": "^24.19.1",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^5.2.0",
+    "cross-env": "^10.1.0",
+    "electron": "^44.7.0",
+    "electron-builder": "^26.15.3",
+    "electron-vite": "^5.0.0",
+    "playwright": "^1.64.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "tsx": "^4.23.15",
+    "typescript": "~5.9.3",
+    "vite": "^7.3.7",
+    "vitest": "^5.0.3",
+    "yazl": "^3.3.1"
+  }
+}
